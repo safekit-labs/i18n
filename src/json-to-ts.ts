@@ -144,7 +144,7 @@ function readTranslationFiles(translationsDir: string, ignorePattern: (filename:
 /**
  * Generate TranslationSchema in a separate $schema.ts file
  */
-function generateSchemaFile(translationFiles: TranslationFile[]): string {
+function createSchemaFile(translationFiles: TranslationFile[]): string {
   const firstTranslation = translationFiles[0];
   const keys = Object.keys(firstTranslation.content);
 
@@ -163,7 +163,7 @@ function generateSchemaFile(translationFiles: TranslationFile[]): string {
 /**
  * Generate utility types (SupportedLocale, Translation)
  */
-function generateTypesFile(translationFiles: TranslationFile[]): string {
+function createTypesFile(translationFiles: TranslationFile[]): string {
   let typesContent = `// This file is auto-generated. Do not edit manually.\n`;
   typesContent += `// Utility types for translations\n\n`;
   
@@ -183,7 +183,7 @@ function generateTypesFile(translationFiles: TranslationFile[]): string {
 /**
  * Generate individual translation file
  */
-function generateTranslationFile(translation: TranslationFile): string {
+function createTranslationFile(translation: TranslationFile): string {
   let content = `// This file is auto-generated. Do not edit manually.\n`;
   content += `// Generated from ${translation.locale}.json\n\n`;
   content += `import type { TranslationSchema } from './$schema';\n\n`;
@@ -204,7 +204,7 @@ function generateTranslationFile(translation: TranslationFile): string {
 /**
  * Generate utilities file with translation loaders and functions
  */
-function generateUtilsFile(translationFiles: TranslationFile[]): string {
+function createUtilsFile(translationFiles: TranslationFile[]): string {
   
   let content = `// This file is auto-generated. Do not edit manually.\n`;
   content += `// Utility functions for translation loading\n\n`;
@@ -240,7 +240,7 @@ function generateUtilsFile(translationFiles: TranslationFile[]): string {
 /**
  * Generate translations folder index file
  */
-function generateTranslationsIndexFile(translationFiles: TranslationFile[]): string {
+function createTranslationsIndexFile(translationFiles: TranslationFile[]): string {
   let content = `// This file is auto-generated. Do not edit manually.\n`;
   content += `// Barrel exports for translations\n\n`;
   
@@ -261,7 +261,7 @@ function generateTranslationsIndexFile(translationFiles: TranslationFile[]): str
  * Generate main index file
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function generateMainIndexFile(_translationFiles: TranslationFile[]): string {
+function createMainIndexFile(_translationFiles: TranslationFile[]): string {
   let content = `// This file is auto-generated. Do not edit manually.\n`;
   content += `// Main barrel exports for all generated files\n\n`;
   
@@ -283,7 +283,7 @@ function generateMainIndexFile(_translationFiles: TranslationFile[]): string {
 /**
  * Generate TypeScript files from JSON translations
  */
-export function generateTypes(options: CodegenOptions): void {
+export function jsonToTs(options: CodegenOptions): void {
   const { 
     translationsDir: inputTranslationsDir, 
     outputDir, 
@@ -342,29 +342,29 @@ export function generateTypes(options: CodegenOptions): void {
     }
 
     // Generate schema file in translations folder
-    const schemaContent = generateSchemaFile(translationFiles);
+    const schemaContent = createSchemaFile(translationFiles);
     writeFileSync(join(translationsDir, '$schema.ts'), schemaContent);
 
     // Generate individual translation files in translations folder
     translationFiles.forEach(translation => {
-      const translationContent = generateTranslationFile(translation);
+      const translationContent = createTranslationFile(translation);
       writeFileSync(join(translationsDir, `${translation.locale}.ts`), translationContent);
     });
 
     // Generate translations index file
-    const translationsIndexContent = generateTranslationsIndexFile(translationFiles);
+    const translationsIndexContent = createTranslationsIndexFile(translationFiles);
     writeFileSync(join(translationsDir, 'index.ts'), translationsIndexContent);
 
     // Generate utility types file
-    const typesContent = generateTypesFile(translationFiles);
+    const typesContent = createTypesFile(translationFiles);
     writeFileSync(join(outputDir, 'types.ts'), typesContent);
 
     // Generate utils file
-    const utilsContent = generateUtilsFile(translationFiles);
+    const utilsContent = createUtilsFile(translationFiles);
     writeFileSync(join(outputDir, 'utils.ts'), utilsContent);
 
     // Generate main index file
-    const mainIndexContent = generateMainIndexFile(translationFiles);
+    const mainIndexContent = createMainIndexFile(translationFiles);
     writeFileSync(join(outputDir, 'index.ts'), mainIndexContent);
 
     log(`\n✅ Generated TypeScript files in: ${outputDir}`);

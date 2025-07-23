@@ -178,12 +178,15 @@ For comprehensive guides on translation workflows, see [Translation Workflows](.
 
 See the [examples](./examples/) directory for comprehensive usage examples:
 - `examples/ts/` - TypeScript translations (direct authoring)
-- `examples/json-codegen/` - JSON → TypeScript code generation workflow (recommended)
+- `examples/json-to-ts-codegen/` - JSON → TypeScript code generation workflow (recommended)
+- `examples/ts-to-json-codegen/` - TypeScript → JSON code generation workflow 
 - `examples/json-direct/` - Direct JSON imports (reference only - not recommended)
 
 ## Code Generation
 
-For teams using JSON translations, see the [Code Generation API](./docs/codegen.md) documentation.
+For teams using different translation workflows:
+- [JSON → TypeScript Code Generation](./docs/json-to-ts-codegen.md) - Convert JSON translations to TypeScript
+- [TypeScript → JSON Code Generation](./docs/ts-to-json-codegen.md) - Convert TypeScript translations to JSON
 
 ## Contributing
 

@@ -1,14 +1,14 @@
 # Code Generation API
 
-For teams using the JSON → TypeScript workflow, `@safekit/safe-i18n` provides a `generateTypes` function to automate the conversion process.
+For teams using the JSON → TypeScript workflow, `@safekit/safe-i18n` provides a `jsonToTs` function to automate the conversion process.
 
 ## Basic Usage
 
 ```typescript
-import { generateTypes } from '@safekit/safe-i18n';
+import { jsonToTs } from '@safekit/safe-i18n';
 
 // Generate TypeScript files from JSON translations
-generateTypes({
+jsonToTs({
   translationsDir: './src/translations',  // Directory with JSON files
   outputDir: './src/generated',          // Output directory for TS files
   ignorePattern: (filename) => filename.startsWith('$'),  // Optional: ignore files (default: '$*')
@@ -63,9 +63,9 @@ generated/                  # Generated TypeScript files
 
 ```typescript
 // scripts/generate-translations.ts
-import { generateTypes } from '@safekit/safe-i18n';
+import { jsonToTs } from '@safekit/safe-i18n';
 
-generateTypes({
+jsonToTs({
   translationsDir: './translations',
   outputDir: './src/generated'
 });
@@ -84,7 +84,7 @@ generateTypes({
 
 ## Validation and Error Handling
 
-The `generateTypes` function includes comprehensive validation:
+The `jsonToTs` function includes comprehensive validation:
 
 - **Structure consistency** - Ensures all translation files have the same keys
 - **Data type validation** - Only allows string values in translations

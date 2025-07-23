@@ -1,0 +1,13 @@
+{
+    "$schema": "./$auth-schema.json",
+    "app.title": "Gestor de Tareas",
+    "form.buttons.cancel": "Cancelar",
+    "form.buttons.save": "Guardar",
+    "form.validation.email": "Por favor ingresa una dirección de correo válida",
+    "form.validation.required": "{{field}} es obligatorio",
+    "nav.about": "Acerca de",
+    "nav.home": "Inicio",
+    "tasks.count": "Tienes {{count}} tareas",
+    "user.greeting": "¡Hola {{name}}!",
+    "user.welcome": "¡Bienvenido {{firstName}} {{lastName}}!"
+}

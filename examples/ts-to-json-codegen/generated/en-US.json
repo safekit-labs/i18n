@@ -1,0 +1,13 @@
+{
+    "$schema": "./$auth-schema.json",
+    "app.title": "Task Manager",
+    "form.buttons.cancel": "Cancel",
+    "form.buttons.save": "Save",
+    "form.validation.email": "Please enter a valid email",
+    "form.validation.required": "{{field}} is required",
+    "nav.about": "About",
+    "nav.home": "Home",
+    "tasks.count": "You have {{count}} tasks",
+    "user.greeting": "Hello {{name}}!",
+    "user.welcome": "Welcome {{firstName}} {{lastName}}!"
+}

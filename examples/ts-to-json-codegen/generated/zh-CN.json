@@ -1,0 +1,13 @@
+{
+    "$schema": "./$auth-schema.json",
+    "app.title": "任务管理器",
+    "form.buttons.cancel": "取消",
+    "form.buttons.save": "保存",
+    "form.validation.email": "请输入有效的邮箱地址",
+    "form.validation.required": "{{field}} 是必填项",
+    "nav.about": "关于",
+    "nav.home": "首页",
+    "tasks.count": "您有 {{count}} 个任务",
+    "user.greeting": "您好 {{name}}！",
+    "user.welcome": "欢迎 {{firstName}} {{lastName}}！"
+}

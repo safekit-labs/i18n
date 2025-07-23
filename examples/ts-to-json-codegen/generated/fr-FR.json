@@ -1,0 +1,13 @@
+{
+    "$schema": "./$auth-schema.json",
+    "app.title": "Gestionnaire de Tâches",
+    "form.buttons.cancel": "Annuler",
+    "form.buttons.save": "Enregistrer",
+    "form.validation.email": "Veuillez saisir une adresse email valide",
+    "form.validation.required": "{{field}} est obligatoire",
+    "nav.about": "À propos",
+    "nav.home": "Accueil",
+    "tasks.count": "Vous avez {{count}} tâches",
+    "user.greeting": "Bonjour {{name}} !",
+    "user.welcome": "Bienvenue {{firstName}} {{lastName}} !"
+}

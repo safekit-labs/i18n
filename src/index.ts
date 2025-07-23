@@ -1,7 +1,9 @@
 export { createTranslator, type TranslatorOptions } from "./create-translator";
 export { getFixedT } from "./get-fixed-t";
-export { generateTypes } from "./codegen";
-export type { CodegenOptions } from "./codegen";
+export { jsonToTs } from "./json-to-ts";
+export type { CodegenOptions } from "./json-to-ts";
+export { tsToJson } from "./ts-to-json";
+export type { TsToJsonOptions } from "./ts-to-json";
 export type { 
 	FlatTranslations, 
 	InterpolationKey, 

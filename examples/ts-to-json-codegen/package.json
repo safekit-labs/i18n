@@ -1,0 +1,10 @@
+{
+  "name": "ts-to-json-codegen-example",
+  "private": true,
+  "description": "Example demonstrating TypeScript → JSON code generation workflow",
+  "scripts": {
+    "generate": "bun run generate.script.ts",
+    "generate:auth": "bun run generate.script.ts --schema-name=auth",
+    "validate": "bun run generate.script.ts --dry-run"
+  }
+}

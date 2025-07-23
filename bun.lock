@@ -4,7 +4,7 @@
     "": {
       "name": "@safekit/i18n",
       "devDependencies": {
-        "@types/node": "^24.0.4",
+        "@types/node": "^24.1.0",
         "@typescript-eslint/eslint-plugin": "^8.35.0",
         "@typescript-eslint/parser": "^8.35.0",
         "eslint": "^9.29.0",
