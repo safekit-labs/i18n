@@ -1,11 +1,11 @@
 # Code Generation API
 
-For teams using the JSON → TypeScript workflow, `@safekit/i18n` provides a `generateTypes` function to automate the conversion process.
+For teams using the JSON → TypeScript workflow, `@safekit/safe-i18n` provides a `generateTypes` function to automate the conversion process.
 
 ## Basic Usage
 
 ```typescript
-import { generateTypes } from '@safekit/i18n';
+import { generateTypes } from '@safekit/safe-i18n';
 
 // Generate TypeScript files from JSON translations
 generateTypes({
@@ -63,7 +63,7 @@ generated/                  # Generated TypeScript files
 
 ```typescript
 // scripts/generate-translations.ts
-import { generateTypes } from '@safekit/i18n';
+import { generateTypes } from '@safekit/safe-i18n';
 
 generateTypes({
   translationsDir: './translations',

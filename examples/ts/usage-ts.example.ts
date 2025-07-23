@@ -1,4 +1,4 @@
-import { createTranslator, getFixedT } from '@safekit/i18n';
+import { createTranslator, getFixedT } from '@safekit/safe-i18n';
 import { getTranslations } from './utils';
 import type { SupportedLocale } from './types';
 
