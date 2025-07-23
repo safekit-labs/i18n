@@ -7,7 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### [0.0.1] - 2025-07-23
+
 ### Added
+- `createTranslator` function for type-safe translation with interpolation support
+- `getFixedT` function for namespace-scoped translations
+- Full TypeScript support with compile-time key validation
+- Interpolation support with `{{parameter}}` syntax
+- Type-safe parameter validation for interpolated values
+- Fallback behavior for missing translation keys
+- Support for default values when keys are missing
+- Comprehensive test suite with vitest
+- Complete documentation and usage examples
 - Advanced type system with differentiated handling for TypeScript vs JSON imports
 - TypeScript code generation script (`generate-types.ts`) for JSON-to-TypeScript workflow
 - Complete JSON → TypeScript code generation example in `examples/json-codegen/`
@@ -29,19 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added detailed explanation of flat key structure benefits and tradeoffs
 - Included practical code generation examples with copy-pasteable scripts
 - Clarified TypeScript-first positioning while supporting JSON workflows
-
-## [0.0.1] - 2025-07-22
-
-### Added
-- `createTranslator` function for type-safe translation with interpolation support
-- `getFixedT` function for namespace-scoped translations
-- Full TypeScript support with compile-time key validation
-- Interpolation support with `{{parameter}}` syntax
-- Type-safe parameter validation for interpolated values
-- Fallback behavior for missing translation keys
-- Support for default values when keys are missing
-- Comprehensive test suite with vitest
-- Complete documentation and usage examples
 
 ### Features
 - Zero dependencies
