@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### [0.0.2] - 2025-07-23
+- Updated package name to be called @safekit/safe-i18n
+
 ### [0.0.1] - 2025-07-23
 
 ### Added
