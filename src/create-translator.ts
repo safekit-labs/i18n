@@ -1,9 +1,11 @@
 import { 
 	FlatTranslations, 
+	HasLiteralStrings,
 	InterpolationKey, 
 	NoInterpolationKey, 
 	InterpolationOptions, 
-	SimpleOptions 
+	SimpleOptions,
+	JsonInterpolationOptions
 } from "./types";
 
 export interface TranslatorOptions {
@@ -28,15 +30,21 @@ export function createTranslator<T extends FlatTranslations>(
 ) {
 	type TranslationKey = keyof T & string;
 
-	// Function overloads
+	// TypeScript literal strings - full type safety
 	function translate<K extends InterpolationKey<T>>(
-		key: K,
+		key: HasLiteralStrings<T> extends true ? K : never,
 		options: InterpolationOptions<T, K>,
 	): string;
 
 	function translate<K extends NoInterpolationKey<T>>(
-		key: K,
+		key: HasLiteralStrings<T> extends true ? K : never,
 		options?: SimpleOptions,
+	): string;
+
+	// JSON imports - relaxed type safety
+	function translate<K extends TranslationKey>(
+		key: HasLiteralStrings<T> extends false ? K : never,
+		options?: JsonInterpolationOptions,
 	): string;
 
 	function translate<K extends TranslationKey>(key: K, options?: any): string {

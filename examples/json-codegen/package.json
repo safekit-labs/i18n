@@ -1,0 +1,9 @@
+{
+  "name": "json-codegen-example",
+  "private": true,
+  "description": "Example demonstrating JSON → TypeScript code generation workflow",
+  "scripts": {
+    "generate": "bun run generate.script.ts",
+    "validate": "bun run generate.script.ts --dry-run"
+  }
+}

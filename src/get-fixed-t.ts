@@ -1,10 +1,12 @@
 import { createTranslator, type TranslatorOptions } from "./create-translator";
 import { 
 	FlatTranslations, 
+	HasLiteralStrings,
 	InterpolationKey, 
 	NoInterpolationKey, 
 	InterpolationOptions, 
-	SimpleOptions 
+	SimpleOptions,
+	JsonInterpolationOptions
 } from "./types";
 
 /**
@@ -43,14 +45,21 @@ export function getFixedT<T extends FlatTranslations, N extends string>(
 	type SuffixNoInterpolationKey = KeySuffix<NamespacedNoInterpolationKey>;
 
 	// Function overloads for the scoped translator
+	// TypeScript literal strings - full type safety
 	function scopedTranslate<K extends SuffixInterpolationKey>(
-		key: K,
+		key: HasLiteralStrings<T> extends true ? K : never,
 		options: InterpolationOptions<T, `${N}.${K}`>,
 	): string;
 
 	function scopedTranslate<K extends SuffixNoInterpolationKey>(
-		key: K,
+		key: HasLiteralStrings<T> extends true ? K : never,
 		options?: SimpleOptions,
+	): string;
+
+	// JSON imports - relaxed type safety
+	function scopedTranslate<K extends ValidSuffixes>(
+		key: HasLiteralStrings<T> extends false ? K : never,
+		options?: JsonInterpolationOptions,
 	): string;
 
 	function scopedTranslate(key: ValidSuffixes, options?: any): string {

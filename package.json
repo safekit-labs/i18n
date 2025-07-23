@@ -42,12 +42,9 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-		"typecheck": "tsgo --noEmit -p tsconfig.json",
-		"build:types": "tsgo -p tsconfig.build.json --emitDeclarationOnly",
-		"build:swc": "swc src -d dist --copy-files --config-file .swcrc",
-		"build:swc:full": "bun clean && bun build:types && bun build:swc",
-		"build": "bun build:swc:full",
-		"dev": "swc src -d dist --watch --copy-files --config-file .swcrc",
+		"typecheck": "tsc --noEmit -p tsconfig.json",
+		"build": "bun clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+		"dev": "tsc -p tsconfig.build.json --watch",
 		"dev:typecheck": "bun typecheck --watch --preserveWatchOutput",
 		"lint": "eslint src/**/*.ts",
 		"format": "prettier --write src/**/*.ts",
@@ -56,9 +53,6 @@
     "postgit": "git push --all"
   },
   "devDependencies": {
-    "@swc/core": "*",
-    "@typescript/native-preview": "^7.0.0-dev.20250627.1",
-    "@swc/cli": "*",
     "@types/node": "^24.0.4",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.35.0",
