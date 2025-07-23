@@ -55,7 +55,7 @@ describe("@safekit/i18n", () => {
 
     it("should handle missing keys with default value", () => {
       // @ts-expect-error - testing runtime behavior with invalid key
-      expect(t("missing.key", { defaultValue: "fallback" })).toBe("fallback");
+      expect(t("missing.key", { $defaultValue: "fallback" })).toBe("fallback");
       expect(consoleSpy).toHaveBeenCalledWith(
         'Translation key "missing.key" not found, using default value.'
       );

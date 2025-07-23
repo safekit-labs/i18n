@@ -50,15 +50,15 @@ export function createTranslator<T extends FlatTranslations>(
 	function translate<K extends TranslationKey>(key: K, options?: any): string {
 		const value = translations[key];
 
-		// If no translation found, use defaultValue or key itself
+		// If no translation found, use $defaultValue or key itself
 		if (typeof value !== "string") {
-			if (options?.defaultValue !== undefined) {
+			if (options?.$defaultValue !== undefined) {
 				if (shouldLog(globalOptions.silent)) {
 					console.warn(
 						`Translation key "${key.toString()}" not found, using default value.`
 					);
 				}
-				return options.defaultValue;
+				return options.$defaultValue;
 			}
 			if (shouldLog(globalOptions.silent)) {
 				console.warn(
@@ -71,7 +71,7 @@ export function createTranslator<T extends FlatTranslations>(
 		// Handle interpolation if needed
 		if (options && Object.keys(options).length > 0) {
 			const interpolationValues = { ...options };
-			delete interpolationValues.defaultValue;
+			delete interpolationValues.$defaultValue;
 
 			if (Object.keys(interpolationValues).length > 0) {
 				return value.replace(/\{\{(\w+)\}\}/g, (_, paramKey) => {

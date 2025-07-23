@@ -30,8 +30,8 @@ async function runExample() {
   console.log(t("form.validation.required", { field: "Email" })); // "Email is required"
 
   // With default values
-  console.log(t("app.title", { defaultValue: "My App" })); // "Task Manager"
-  console.log(t("user.greeting", { name: "Bob", defaultValue: "Hi there!" })); // "Hello Bob!"
+  console.log(t("app.title", { $defaultValue: "My App" })); // "Task Manager"
+  console.log(t("user.greeting", { name: "Bob", $defaultValue: "Hi there!" })); // "Hello Bob!"
 
   // ❌ Should show type error
   // @ts-expect-error - this is a test
@@ -121,7 +121,7 @@ async function runExample() {
 
   // With default values
   // @ts-expect-error - testing runtime behavior
-  console.log(t("missing.key", { defaultValue: "Fallback text" })); // "Fallback text"
+  console.log(t("missing.key", { $defaultValue: "Fallback text" })); // "Fallback text"
 
   // Missing interpolation parameters
   console.log(t("user.greeting", { wrongParam: "test" } as any)); // "Hello {{name}}!"

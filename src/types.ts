@@ -45,20 +45,20 @@ export type InterpolationKey<T extends Record<string, string>> = {
 }[keyof T & string];
 
 // Options type for translations without interpolation
-export type SimpleOptions = { defaultValue?: string };
+export type SimpleOptions = { $defaultValue?: string };
 
 // Options type for translations with interpolation
 export type InterpolationOptions<
   T extends Record<string, string>,
   K extends keyof T & string,
 > = {
-  defaultValue?: string;
+  $defaultValue?: string;
 } & {
   [P in InterpolationKeys<T, K>]: string | number;
 };
 
 // Fallback options for JSON imports (non-literal strings)
 export type JsonInterpolationOptions = {
-  defaultValue?: string;
+  $defaultValue?: string;
   [key: string]: string | number | undefined;
 };
