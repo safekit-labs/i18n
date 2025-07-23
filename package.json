@@ -4,7 +4,7 @@
   "author": "safekit",
   "repository": {
     "type": "git",
-    "url": "https://github.com/safekit-labs/safe-i18n.git"
+    "url": "https://github.com/safekit-labs/i18n.git"
   },
   "main": "./dist/src/index.js",
   "module": "./dist/src/index.js",
@@ -16,7 +16,7 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/safekit-labs/safe-i18n/issues"
+    "url": "https://github.com/safekit-labs/i18n/issues"
   },
   "description": "A lightweight type-safe i18n library with interpolation support and namespace scoping",
   "files": [
@@ -25,7 +25,7 @@
     "LICENSE",
     "package.json"
   ],
-  "homepage": "https://github.com/safekit-labs/safe-i18n",
+  "homepage": "https://github.com/safekit-labs/i18n",
   "keywords": [
     "typescript",
     "i18n",
