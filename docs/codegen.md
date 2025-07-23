@@ -19,17 +19,43 @@ generateTypes({
 
 ## Generated Structure
 
-The function creates modular TypeScript files:
+The function creates a clean, organized structure that mirrors the JSON translation folder:
 
 ```
 generated/
-├── types.ts           # Type definitions (TranslationSchema, SupportedLocale, Translation)
-├── en-US.ts           # Individual locale constants
-├── es-ES.ts           # Individual locale constants
-├── [locale].ts        # One file per locale
-├── utils.ts           # Translation loaders and getTranslations function
-└── index.ts           # Barrel exports (clean re-exports of everything)
+├── translations/           # Translation-specific files (mirrors JSON structure)
+│   ├── $schema.ts         # TranslationSchema definition (mirrors $schema.json)
+│   ├── en-US.ts          # Individual locale constants
+│   ├── es-ES.ts          # Individual locale constants
+│   ├── [locale].ts       # One file per locale
+│   └── index.ts          # Barrel exports for translations only
+├── types.ts              # Utility types (SupportedLocale, Translation)
+├── utils.ts              # Translation loaders and getTranslations function
+└── index.ts              # Main barrel exports (re-exports everything)
 ```
+
+This structure directly parallels your JSON translation folder:
+
+```
+translations/                # Your source JSON files
+├── $schema.json            # JSON schema for validation
+├── en-US.json             # Individual locale files
+├── es-ES.json
+└── [locale].json
+
+generated/                  # Generated TypeScript files
+├── translations/           # Mirror of JSON structure
+│   ├── $schema.ts         # TypeScript schema definition
+│   ├── en-US.ts          # Individual locale files
+│   └── ...
+└── ...                     # Utility files
+```
+
+**Benefits of this structure:**
+- ✅ **Clear separation**: Translation files are grouped separately from utility files
+- ✅ **Scalable**: Easy to add more translation-related files in the future  
+- ✅ **Modular imports**: Can import just translations `from './translations'` or everything `from '.'`
+- ✅ **Mirror JSON**: Direct parallel with your source JSON structure
 
 ## Integration Examples
 

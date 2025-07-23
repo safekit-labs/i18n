@@ -1,5 +1,4 @@
-// This file is auto-generated. Do not edit manually.
-// Main barrel exports for all generated files
+// Main barrel exports for all files
 
 // Re-export all translations and schema
 export * from './translations';

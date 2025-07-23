@@ -1,7 +1,4 @@
-// This file is auto-generated. Do not edit manually.
-// Generated from es-ES.json
-
-import type { TranslationSchema } from './types';
+import type { TranslationSchema } from './$schema';
 
 // es-ES translations
 export const esES = {
@@ -14,5 +11,5 @@ export const esES = {
   "form.buttons.save": "Guardar",
   "form.buttons.cancel": "Cancelar",
   "nav.home": "Inicio",
-  "nav.about": "Acerca de",
+  "nav.about": "Acerca de"
 } as const satisfies TranslationSchema;

@@ -1,6 +1,6 @@
 import { createTranslator, getFixedT } from '@safekit/i18n';
-import { getTranslations } from './translations-ts';
-import type { SupportedLocale } from './translations-ts';
+import { getTranslations } from './utils';
+import type { SupportedLocale } from './types';
 
 // Run this example with: bun run examples/ts/usage-ts.example.ts
 

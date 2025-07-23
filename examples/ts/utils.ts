@@ -1,4 +1,3 @@
-// This file is auto-generated. Do not edit manually.
 // Utility functions for translation loading
 
 import type { SupportedLocale } from './types';
@@ -7,7 +6,7 @@ import { esES } from './translations/es-ES';
 import { frFR } from './translations/fr-FR';
 import { zhCN } from './translations/zh-CN';
 
-// Translation loaders
+// Translation loaders (async functions that return the translation objects)
 const translationLoaders = {
   'en-US': async () => enUS,
   'es-ES': async () => esES,

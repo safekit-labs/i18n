@@ -1,7 +1,7 @@
 // This file is auto-generated. Do not edit manually.
 // Generated from fr-FR.json
 
-import type { TranslationSchema } from './types';
+import type { TranslationSchema } from './$schema';
 
 // fr-FR translations
 export const frFR = {

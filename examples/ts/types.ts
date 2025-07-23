@@ -1,4 +1,3 @@
-// This file is auto-generated. Do not edit manually.
 // Utility types for translations
 
 // Supported locales

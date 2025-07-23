@@ -1,7 +1,4 @@
-// This file is auto-generated. Do not edit manually.
-// Generated from zh-CN.json
-
-import type { TranslationSchema } from './types';
+import type { TranslationSchema } from './$schema';
 
 // zh-CN translations
 export const zhCN = {
@@ -14,5 +11,5 @@ export const zhCN = {
   "form.buttons.save": "保存",
   "form.buttons.cancel": "取消",
   "nav.home": "首页",
-  "nav.about": "关于",
+  "nav.about": "关于"
 } as const satisfies TranslationSchema;

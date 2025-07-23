@@ -142,30 +142,40 @@ function readTranslationFiles(translationsDir: string, ignorePattern: (filename:
 }
 
 /**
- * Generate TypeScript type definitions from the first translation file
+ * Generate TranslationSchema in a separate $schema.ts file
  */
-function generateTypesFile(translationFiles: TranslationFile[]): string {
+function generateSchemaFile(translationFiles: TranslationFile[]): string {
   const firstTranslation = translationFiles[0];
   const keys = Object.keys(firstTranslation.content);
 
-  let typesContent = `// This file is auto-generated. Do not edit manually.\n`;
-  typesContent += `// Type definitions for translations\n\n`;
-  typesContent += `// Schema that all translations must satisfy\n`;
-  typesContent += `export type TranslationSchema = {\n`;
+  let schemaContent = `// This file is auto-generated. Do not edit manually.\n`;
+  schemaContent += `// Translation schema definition\n\n`;
+  schemaContent += `// Schema that all translations must satisfy\n`;
+  schemaContent += `export type TranslationSchema = {\n`;
   keys.forEach(key => {
-    typesContent += `  "${key}": string;\n`;
+    schemaContent += `  "${key}": string;\n`;
   });
-  typesContent += `};\n\n`;
+  schemaContent += `};\n`;
+
+  return schemaContent;
+}
+
+/**
+ * Generate utility types (SupportedLocale, Translation)
+ */
+function generateTypesFile(translationFiles: TranslationFile[]): string {
+  let typesContent = `// This file is auto-generated. Do not edit manually.\n`;
+  typesContent += `// Utility types for translations\n\n`;
   
   // Add supported locales type
   const locales = translationFiles.map(t => t.locale);
   typesContent += `// Supported locales\n`;
   typesContent += `export type SupportedLocale = ${locales.map(l => `'${l}'`).join(' | ')};\n\n`;
   
-  // Add translation type
+  // Add translation type (now references translations folder)
   const firstVarName = translationFiles[0].varName;
   typesContent += `// Translation type (based on the first locale)\n`;
-  typesContent += `export type Translation = typeof import('./${translationFiles[0].locale}').${firstVarName};\n`;
+  typesContent += `export type Translation = typeof import('./translations/${translationFiles[0].locale}').${firstVarName};\n`;
 
   return typesContent;
 }
@@ -176,7 +186,7 @@ function generateTypesFile(translationFiles: TranslationFile[]): string {
 function generateTranslationFile(translation: TranslationFile): string {
   let content = `// This file is auto-generated. Do not edit manually.\n`;
   content += `// Generated from ${translation.locale}.json\n\n`;
-  content += `import type { TranslationSchema } from './types';\n\n`;
+  content += `import type { TranslationSchema } from './$schema';\n\n`;
   content += `// ${translation.locale} translations\n`;
   content += `export const ${translation.varName} = {\n`;
   
@@ -201,9 +211,9 @@ function generateUtilsFile(translationFiles: TranslationFile[]): string {
   
   content += `import type { SupportedLocale } from './types';\n`;
   
-  // Import all translations
+  // Import all translation constants from translations folder
   translationFiles.forEach(translation => {
-    content += `import { ${translation.varName} } from './${translation.locale}';\n`;
+    content += `import { ${translation.varName} } from './translations/${translation.locale}';\n`;
   });
   content += `\n`;
   
@@ -228,22 +238,40 @@ function generateUtilsFile(translationFiles: TranslationFile[]): string {
 }
 
 /**
- * Generate barrel export index file
+ * Generate translations folder index file
  */
-function generateIndexFile(translationFiles: TranslationFile[]): string {
+function generateTranslationsIndexFile(translationFiles: TranslationFile[]): string {
   let content = `// This file is auto-generated. Do not edit manually.\n`;
-  content += `// Barrel exports for all translations and utilities\n\n`;
+  content += `// Barrel exports for translations\n\n`;
   
-  // Export types
-  content += `// Export all types\n`;
-  content += `export type { TranslationSchema, SupportedLocale, Translation } from './types';\n\n`;
+  // Export schema
+  content += `// Export translation schema\n`;
+  content += `export type { TranslationSchema } from './$schema';\n\n`;
   
   // Export all translation constants
   content += `// Export all translation constants\n`;
   translationFiles.forEach(translation => {
     content += `export { ${translation.varName} } from './${translation.locale}';\n`;
   });
-  content += `\n`;
+  
+  return content;
+}
+
+/**
+ * Generate main index file
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function generateMainIndexFile(_translationFiles: TranslationFile[]): string {
+  let content = `// This file is auto-generated. Do not edit manually.\n`;
+  content += `// Main barrel exports for all generated files\n\n`;
+  
+  // Re-export everything from translations
+  content += `// Re-export all translations and schema\n`;
+  content += `export * from './translations';\n\n`;
+  
+  // Export utility types
+  content += `// Export utility types\n`;
+  content += `export type { SupportedLocale, Translation } from './types';\n\n`;
   
   // Export utilities
   content += `// Export utility functions\n`;
@@ -257,7 +285,7 @@ function generateIndexFile(translationFiles: TranslationFile[]): string {
  */
 export function generateTypes(options: CodegenOptions): void {
   const { 
-    translationsDir, 
+    translationsDir: inputTranslationsDir, 
     outputDir, 
     ignorePattern = defaultIgnorePattern,
     continueOnError = false,
@@ -274,8 +302,8 @@ export function generateTypes(options: CodegenOptions): void {
 
   try {
     // Preflight checks
-    if (!existsSync(translationsDir)) {
-      throw new Error(`Translations directory does not exist: ${translationsDir}`);
+    if (!existsSync(inputTranslationsDir)) {
+      throw new Error(`Translations directory does not exist: ${inputTranslationsDir}`);
     }
 
     // Ensure output directory exists
@@ -284,7 +312,7 @@ export function generateTypes(options: CodegenOptions): void {
     }
 
     // Read all translation files
-    const translationFiles = readTranslationFiles(translationsDir, ignorePattern);
+    const translationFiles = readTranslationFiles(inputTranslationsDir, ignorePattern);
     
     log(`Found ${translationFiles.length} translation files: ${translationFiles.map(t => t.locale).join(', ')}`);
 
@@ -307,27 +335,42 @@ export function generateTypes(options: CodegenOptions): void {
       log('✅ All translation files are valid');
     }
 
-    // Generate types file
-    const typesContent = generateTypesFile(translationFiles);
-    writeFileSync(join(outputDir, 'types.ts'), typesContent);
+    // Create translations subdirectory
+    const translationsDir = join(outputDir, 'translations');
+    if (!existsSync(translationsDir)) {
+      mkdirSync(translationsDir, { recursive: true });
+    }
 
-    // Generate individual translation files
+    // Generate schema file in translations folder
+    const schemaContent = generateSchemaFile(translationFiles);
+    writeFileSync(join(translationsDir, '$schema.ts'), schemaContent);
+
+    // Generate individual translation files in translations folder
     translationFiles.forEach(translation => {
       const translationContent = generateTranslationFile(translation);
-      writeFileSync(join(outputDir, `${translation.locale}.ts`), translationContent);
+      writeFileSync(join(translationsDir, `${translation.locale}.ts`), translationContent);
     });
+
+    // Generate translations index file
+    const translationsIndexContent = generateTranslationsIndexFile(translationFiles);
+    writeFileSync(join(translationsDir, 'index.ts'), translationsIndexContent);
+
+    // Generate utility types file
+    const typesContent = generateTypesFile(translationFiles);
+    writeFileSync(join(outputDir, 'types.ts'), typesContent);
 
     // Generate utils file
     const utilsContent = generateUtilsFile(translationFiles);
     writeFileSync(join(outputDir, 'utils.ts'), utilsContent);
 
-    // Generate index file
-    const indexContent = generateIndexFile(translationFiles);
-    writeFileSync(join(outputDir, 'index.ts'), indexContent);
+    // Generate main index file
+    const mainIndexContent = generateMainIndexFile(translationFiles);
+    writeFileSync(join(outputDir, 'index.ts'), mainIndexContent);
 
     log(`\n✅ Generated TypeScript files in: ${outputDir}`);
-    log(`📦 Files created: types.ts, ${translationFiles.map(t => `${t.locale}.ts`).join(', ')}, utils.ts, index.ts`);
-    log(`📦 Exported: ${translationFiles.map(t => t.varName).join(', ')}, getTranslations, Translation, SupportedLocale`);
+    log(`📦 Main files: types.ts, utils.ts, index.ts`);
+    log(`📦 Translations folder: $schema.ts, ${translationFiles.map(t => `${t.locale}.ts`).join(', ')}, index.ts`);
+    log(`📦 Exported: ${translationFiles.map(t => t.varName).join(', ')}, getTranslations, Translation, SupportedLocale, TranslationSchema`);
     
   } catch (error) {
     logError(`\n❌ Code generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);

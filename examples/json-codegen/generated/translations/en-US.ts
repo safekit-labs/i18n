@@ -1,7 +1,7 @@
 // This file is auto-generated. Do not edit manually.
 // Generated from en-US.json
 
-import type { TranslationSchema } from './types';
+import type { TranslationSchema } from './$schema';
 
 // en-US translations
 export const enUS = {
