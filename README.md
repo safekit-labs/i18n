@@ -1,6 +1,6 @@
 # @safekit/i18n
 
-This package is in active development and not ready for production use. Expect breaking changes between versions.
+This package is in active development. Expect breaking changes between versions.
 
 A lightweight, type-safe internationalization (i18n) library for TypeScript applications with support for interpolation and namespace scoping.
 
@@ -284,7 +284,7 @@ This design choice offers several benefits:
 
 **Pros:**
 - ✅ **Simpler type system** - No complex recursive type traversal needed
-- ✅ **Better performance** - Key lookup is O(1) instead of nested traversal  
+- ✅ **Better performance** - Key lookup is O(1) instead of nested traversal
 - ✅ **Easier tooling** - Translation management systems work better with flat keys
 - ✅ **Consistent naming** - Prevents inconsistent nesting patterns across locales
 - ✅ **Namespace flexibility** - Can easily scope to any level (`form.validation`, `user.settings.privacy`)
@@ -324,7 +324,7 @@ The function creates modular TypeScript files:
 ```
 generated/
 ├── types.ts           # Type definitions (TranslationSchema, SupportedLocale, Translation)
-├── en-US.ts           # Individual locale constants  
+├── en-US.ts           # Individual locale constants
 ├── es-ES.ts           # Individual locale constants
 ├── [locale].ts        # One file per locale
 ├── utils.ts           # Translation loaders and getTranslations function
@@ -359,7 +359,7 @@ generateTypes({
 The `generateTypes` function includes comprehensive validation:
 
 - **Structure consistency** - Ensures all translation files have the same keys
-- **Data type validation** - Only allows string values in translations  
+- **Data type validation** - Only allows string values in translations
 - **Empty value detection** - Warns about missing translations
 - **JSON parsing** - Catches malformed JSON files
 - **Variable name validation** - Ensures locale names create valid TypeScript identifiers
