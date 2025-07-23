@@ -1,10 +1,10 @@
-# @safekit/safe-i18n
+# @safekit/i18n
 
 ⚠️ This package is in active development. Expect breaking changes between versions.
 
 A lightweight, type-safe internationalization (i18n) library for TypeScript applications with support for interpolation and namespace scoping.
 
-[![npm version](https://badge.fury.io/js/@safekit%2Fsafe-i18n.svg)](https://badge.fury.io/js/@safekit%2Fsafe-i18n)
+[![npm version](https://badge.fury.io/js/@safekit%2Fi18n.svg)](https://badge.fury.io/js/@safekit%2Fi18n)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -21,9 +21,9 @@ A lightweight, type-safe internationalization (i18n) library for TypeScript appl
 ## Installation
 
 ```bash
-npm install @safekit/safe-i18n
-yarn add @safekit/safe-i18n
-bun add @safekit/safe-i18n
+npm install @safekit/i18n
+yarn add @safekit/i18n
+bun add @safekit/i18n
 ```
 
 ## createTranslator
@@ -31,7 +31,7 @@ bun add @safekit/safe-i18n
 The main function for creating a translator with type-safe translation keys and interpolation.
 
 ```typescript
-import { createTranslator } from '@safekit/safe-i18n';
+import { createTranslator } from '@safekit/i18n';
 
 const translations = {
   "welcome": "Welcome!",
@@ -57,7 +57,7 @@ t("greeting", { wrongParam: "test" }); // Error: invalid parameter
 Create a scoped translator for a specific namespace to avoid repeating prefixes.
 
 ```typescript
-import { getFixedT } from '@safekit/safe-i18n';
+import { getFixedT } from '@safekit/i18n';
 
 const translations = {
   "user.greeting": "Hello {{name}}!",

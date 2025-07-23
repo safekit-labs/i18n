@@ -1,6 +1,6 @@
 # Translation Workflows
 
-To achieve full type safety, `@safekit/safe-i18n` requires TypeScript objects with `as const` assertions. Your application will **always** consume TypeScript objects at runtime. The choice is: **what file format will you and your team edit by hand?**
+To achieve full type safety, `@safekit/i18n` requires TypeScript objects with `as const` assertions. Your application will **always** consume TypeScript objects at runtime. The choice is: **what file format will you and your team edit by hand?**
 
 ## Workflow 1: TypeScript as Source of Truth
 
@@ -18,7 +18,7 @@ export const en = {
 
 // app.ts (Your application code)
 import { en } from './translations/en';
-import { createTranslator } from '@safekit/safe-i18n';
+import { createTranslator } from '@safekit/i18n';
 
 const t = createTranslator(en);
 t("greeting", { name: "Alex" }); // ✅ Full compile-time type safety
@@ -60,7 +60,7 @@ export const en = {
 
 // app.ts (Your application code)
 import { en } from './generated/translations';
-import { createTranslator } from '@safekit/safe-i18n';
+import { createTranslator } from '@safekit/i18n';
 
 const t = createTranslator(en);
 t("greeting", { name: "Alex" }); // ✅ Same type safety as Workflow 1

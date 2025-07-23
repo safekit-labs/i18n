@@ -1,11 +1,11 @@
 # TypeScript → JSON Code Generation
 
-For teams using the TypeScript → JSON workflow, `@safekit/safe-i18n` provides a `tsToJson` function to automate the conversion process. This is ideal for teams who start with TypeScript translations but want to migrate to JSON-based workflows as they scale.
+For teams using the TypeScript → JSON workflow, `@safekit/i18n` provides a `tsToJson` function to automate the conversion process. This is ideal for teams who start with TypeScript translations but want to migrate to JSON-based workflows as they scale.
 
 ## Basic Usage
 
 ```typescript
-import { tsToJson } from '@safekit/safe-i18n';
+import { tsToJson } from '@safekit/i18n';
 
 // Generate JSON files from TypeScript translations
 tsToJson({
@@ -112,7 +112,7 @@ export const enUS = {
 
 ```typescript
 // scripts/generate-json.ts
-import { tsToJson } from '@safekit/safe-i18n';
+import { tsToJson } from '@safekit/i18n';
 
 tsToJson({
   translationsDir: './src/translations',

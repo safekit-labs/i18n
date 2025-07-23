@@ -1,11 +1,11 @@
 # Code Generation API
 
-For teams using the JSON → TypeScript workflow, `@safekit/safe-i18n` provides a `jsonToTs` function to automate the conversion process.
+For teams using the JSON → TypeScript workflow, `@safekit/i18n` provides a `jsonToTs` function to automate the conversion process.
 
 ## Basic Usage
 
 ```typescript
-import { jsonToTs } from '@safekit/safe-i18n';
+import { jsonToTs } from '@safekit/i18n';
 
 // Generate TypeScript files from JSON translations
 jsonToTs({
@@ -63,7 +63,7 @@ generated/                  # Generated TypeScript files
 
 ```typescript
 // scripts/generate-translations.ts
-import { jsonToTs } from '@safekit/safe-i18n';
+import { jsonToTs } from '@safekit/i18n';
 
 jsonToTs({
   translationsDir: './translations',

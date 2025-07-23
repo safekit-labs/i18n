@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2025-01-23
+## [0.2.0] - 2025-07-23
+
+- Changed name from `@safekit/safe-i18n` to `@safekit/i18n`
+
+
+## [0.1.0] - 2025-07-23
 
 ### Added
 - `tsToJson` function for converting TypeScript translations to JSON format
@@ -14,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `examples/ts-to-json-codegen` demonstrating TypeScript → JSON workflow
 - JSON Schema generation with proper `properties` and `required` arrays
 
-### Changed  
+### Changed
 - **BREAKING**: Renamed `generateTypes` function to `jsonToTs` for clarity
 - Renamed `src/codegen.ts` to `src/json-to-ts.ts`
 - Renamed internal helper functions from `generate*` to `create*` pattern
@@ -27,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### [0.0.2] - 2025-07-23
-- Updated package name to be called @safekit/safe-i18n
+- Updated package name to be called @safekit/i18n
 
 ### [0.0.1] - 2025-07-23
 

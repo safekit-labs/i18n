@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { createTranslator, getFixedT } from "@/index";
 
-describe("@safekit/safe-i18n", () => {
+describe("@safekit/i18n", () => {
   let consoleSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
