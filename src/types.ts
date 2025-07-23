@@ -15,7 +15,7 @@ export type HasLiteralStrings<T extends Record<string, string>> = {
 
 // Helper type to extract interpolation keys from a string
 export type ExtractInterpolationKeys<S extends string> =
-  S extends `${infer _}{{${infer Key}}}${infer Rest}`
+  S extends `${string}{{${infer Key}}}${infer Rest}`
     ? Key | ExtractInterpolationKeys<Rest>
     : never;
 

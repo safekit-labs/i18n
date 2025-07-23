@@ -26,9 +26,9 @@ export function getFixedT<T extends FlatTranslations, N extends string>(
 	type ValidSuffixes = KeySuffix<KeysWithNamespace>;
 
 	// Map from suffix to full key for type safety
-	type SuffixToFullKey = {
-		[K in ValidSuffixes]: `${N}.${K}`;
-	};
+	// type SuffixToFullKey = {
+	// 	[K in ValidSuffixes]: `${N}.${K}`;
+	// };
 
 	// Identify interpolation keys in the namespace
 	type NamespacedInterpolationKey = Extract<

@@ -195,8 +195,6 @@ function generateTranslationFile(translation: TranslationFile): string {
  * Generate utilities file with translation loaders and functions
  */
 function generateUtilsFile(translationFiles: TranslationFile[]): string {
-  const locales = translationFiles.map(t => t.locale);
-  const varNames = translationFiles.map(t => t.varName);
   
   let content = `// This file is auto-generated. Do not edit manually.\n`;
   content += `// Utility functions for translation loading\n\n`;

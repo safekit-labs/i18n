@@ -17,6 +17,7 @@ function shouldLog(silent?: boolean): boolean {
 	if (silent !== undefined) return !silent;
 
 	// Auto-detect environment: only log in development
+	// eslint-disable-next-line no-undef
 	return typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production';
 }
 

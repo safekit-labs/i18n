@@ -49,7 +49,8 @@
 		"lint": "eslint src/**/*.ts",
 		"format": "prettier --write src/**/*.ts",
 		"test": "vitest",
-    "git": "bun run lint && bun run typecheck && bun run build && bun run test --run && git add . && git commit -m",
+		"ci": "bun run lint && bun run typecheck && bun run build && bun run test --run",
+    "git": "bun run ci && git add . && git commit -m",
     "postgit": "git push --all"
   },
   "devDependencies": {
