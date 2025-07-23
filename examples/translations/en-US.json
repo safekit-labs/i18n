@@ -1,0 +1,54 @@
+{
+  "app.title": "Task Manager",
+  "app.description": "Manage your tasks efficiently",
+  "app.welcome": "Welcome to {{appName}}!",
+  
+  "nav.home": "Home",
+  "nav.tasks": "Tasks", 
+  "nav.settings": "Settings",
+  "nav.profile": "Profile",
+  
+  "user.greeting": "Hello {{firstName}}!",
+  "user.fullGreeting": "Hello {{firstName}} {{lastName}}!",
+  "user.profile.name": "Full Name",
+  "user.profile.email": "Email Address",
+  "user.profile.phone": "Phone Number",
+  
+  "tasks.title": "My Tasks",
+  "tasks.empty": "No tasks yet",
+  "tasks.count": "You have {{count}} tasks",
+  "tasks.completed": "{{completed}} of {{total}} completed",
+  "tasks.create": "Create Task",
+  "tasks.edit": "Edit Task",
+  "tasks.delete": "Delete Task",
+  
+  "form.validation.required": "{{field}} is required",
+  "form.validation.email": "Please enter a valid email address",
+  "form.validation.minLength": "{{field}} must be at least {{min}} characters",
+  "form.validation.maxLength": "{{field}} cannot exceed {{max}} characters",
+  
+  "form.labels.title": "Title",
+  "form.labels.description": "Description", 
+  "form.labels.priority": "Priority",
+  "form.labels.dueDate": "Due Date",
+  
+  "form.buttons.save": "Save",
+  "form.buttons.cancel": "Cancel",
+  "form.buttons.submit": "Submit",
+  "form.buttons.reset": "Reset",
+  
+  "status.loading": "Loading...",
+  "status.saving": "Saving...",
+  "status.saved": "Saved successfully",
+  "status.error": "An error occurred",
+  
+  "errors.network": "Network connection failed",
+  "errors.timeout": "Request timed out after {{seconds}} seconds",
+  "errors.notFound": "{{resource}} not found",
+  "errors.unauthorized": "You are not authorized to perform this action",
+  
+  "success.taskCreated": "Task '{{title}}' created successfully",
+  "success.taskUpdated": "Task updated successfully", 
+  "success.taskDeleted": "Task deleted successfully",
+  "success.profileSaved": "Profile saved successfully"
+}

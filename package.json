@@ -1,0 +1,77 @@
+{
+  "name": "@safekit/i18n",
+  "version": "0.0.1",
+  "author": "safekit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/safekit-labs/i18n.git"
+  },
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/safekit-labs/i18n/issues"
+  },
+  "description": "A lightweight type-safe i18n library with interpolation support and namespace scoping",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "homepage": "https://github.com/safekit-labs/i18n",
+  "keywords": [
+    "typescript",
+    "i18n",
+    "internationalization",
+    "translation",
+    "type-safe",
+    "interpolation",
+    "namespace"
+  ],
+  "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+		"typecheck": "tsgo --noEmit -p tsconfig.json",
+		"build:types": "tsgo -p tsconfig.build.json --emitDeclarationOnly",
+		"build:swc": "swc src -d dist --copy-files --config-file .swcrc",
+		"build:swc:full": "bun clean && bun build:types && bun build:swc",
+		"build": "bun build:swc:full",
+		"dev": "swc src -d dist --watch --copy-files --config-file .swcrc",
+		"dev:typecheck": "bun typecheck --watch --preserveWatchOutput",
+		"lint": "eslint src/**/*.ts",
+		"format": "prettier --write src/**/*.ts",
+		"test": "vitest",
+    "git": "bun run lint && bun run typecheck && bun run build && bun run test --run && git add . && git commit -m",
+    "postgit": "git push --all"
+  },
+  "devDependencies": {
+    "@swc/core": "*",
+    "@typescript/native-preview": "^7.0.0-dev.20250627.1",
+    "@swc/cli": "*",
+    "@types/node": "^24.0.4",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.0",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "jiti": "^2.4.2",
+    "prettier": "^3.6.2",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
+  },
+  "type": "module",
+  "types": "./dist/src/index.d.ts"
+}
