@@ -4,15 +4,17 @@
   "author": "safekit",
   "repository": {
     "type": "git",
-    "url": "https://github.com/safekit-labs/i18n.git"
+    "url": "git+https://github.com/safekit-labs/i18n.git"
   },
-  "main": "./dist/src/index.js",
-  "module": "./dist/src/index.js",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
-      "types": "./dist/src/index.d.ts",
-      "import": "./dist/src/index.js",
-      "require": "./dist/src/index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     }
   },
   "bugs": {
@@ -68,7 +70,6 @@
     "vite": "^7.0.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
-  },
-  "type": "module",
-  "types": "./dist/src/index.d.ts"
+  }
+
 }
