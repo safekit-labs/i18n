@@ -1,6 +1,6 @@
 {
   "name": "@safekit/i18n",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "safekit",
   "repository": {
     "type": "git",
@@ -47,7 +47,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "build": "bun clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build": "bun clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json -f",
     "dev": "tsc -p tsconfig.build.json --watch",
     "dev:typecheck": "bun typecheck --watch --preserveWatchOutput",
     "lint": "eslint src/**/*.ts",
