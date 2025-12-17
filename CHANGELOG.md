@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/safekit-labs/i18n/compare/v0.2.3...v0.3.0) (2025-12-17)
+
+
+### Features
+
+* separate client/server exports and add semantic-release ([5fe8642](https://github.com/safekit-labs/i18n/commit/5fe8642670a99b8239cc90e94630e9a2331f0d51))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
