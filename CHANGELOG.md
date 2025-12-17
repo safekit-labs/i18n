@@ -1,3 +1,23 @@
+# [1.0.0](https://github.com/safekit-labs/i18n/compare/v0.2.3...v1.0.0) (2025-12-17)
+
+
+* feat!: separate client/server exports and add semantic-release ([6c1988c](https://github.com/safekit-labs/i18n/commit/6c1988c7d0a7067e144ad678ab1fd4d772dfc194))
+
+
+### BREAKING CHANGES
+
+* The main entry point now only exports client-safe runtime utilities.
+Node.js-only codegen functions (jsonToTs, tsToJson) are now at @safekit/i18n/server
+
+- import { createTranslator } from "@safekit/i18n" (client-safe)
+- import { jsonToTs } from "@safekit/i18n/server" (Node.js only)
+
+Also adds semantic-release for automatic npm publishing on push to main.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
