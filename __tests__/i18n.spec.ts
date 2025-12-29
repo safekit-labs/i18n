@@ -100,7 +100,7 @@ describe("@safekit/i18n", () => {
   describe("silent option", () => {
     it("should log warnings by default", () => {
       const t = createTranslator(translations);
-      
+
       // @ts-expect-error - testing runtime behavior with invalid key
       t("missing.key");
       expect(consoleSpy).toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe("@safekit/i18n", () => {
 
     it("should not log warnings when silent is true", () => {
       const t = createTranslator(translations, { silent: true });
-      
+
       // @ts-expect-error - testing runtime behavior with invalid key
       expect(t("missing.key")).toBe("missing.key");
       expect(consoleSpy).not.toHaveBeenCalled();
@@ -116,10 +116,162 @@ describe("@safekit/i18n", () => {
 
     it("should work with getFixedT silent option", () => {
       const tUser = getFixedT(translations, "user", { silent: true });
-      
+
       // @ts-expect-error - testing runtime behavior with invalid key
       expect(tUser("invalid")).toBe("user.invalid");
       expect(consoleSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("$ref resolution", () => {
+    it("resolves a simple reference", () => {
+      const t = createTranslator(
+        {
+          source: "Hello",
+          alias: "$ref:source",
+        } as const,
+        { resolveRefs: true }
+      );
+      expect(t("alias")).toBe("Hello");
+    });
+
+    it("resolves chained references", () => {
+      const t = createTranslator(
+        {
+          a: "Value",
+          b: "$ref:a",
+          c: "$ref:b",
+        } as const,
+        { resolveRefs: true }
+      );
+      expect(t("c")).toBe("Value");
+    });
+
+    it("returns key on circular reference", () => {
+      const t = createTranslator(
+        {
+          a: "$ref:b",
+          b: "$ref:a",
+        } as const,
+        { resolveRefs: true, silent: true }
+      );
+      expect(t("a")).toBe("a");
+    });
+
+    it("warns on circular reference", () => {
+      const t = createTranslator(
+        {
+          a: "$ref:b",
+          b: "$ref:a",
+        } as const,
+        { resolveRefs: true }
+      );
+      t("a");
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Circular reference detected: "b" -> "a"'
+      );
+    });
+
+    it("returns key on missing target", () => {
+      const t = createTranslator(
+        {
+          alias: "$ref:nonexistent",
+        } as const,
+        { resolveRefs: true, silent: true }
+      );
+      expect(t("alias")).toBe("alias");
+    });
+
+    it("warns on missing target", () => {
+      const t = createTranslator(
+        {
+          alias: "$ref:nonexistent",
+        } as const,
+        { resolveRefs: true }
+      );
+      t("alias");
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Reference target "nonexistent" not found for key "alias"'
+      );
+    });
+
+    it("does not resolve when resolveRefs is false", () => {
+      const t = createTranslator(
+        {
+          source: "Hello",
+          alias: "$ref:source",
+        } as const,
+        { resolveRefs: false }
+      );
+      expect(t("alias")).toBe("$ref:source");
+    });
+
+    it("does not resolve when resolveRefs is undefined (default)", () => {
+      const t = createTranslator({
+        source: "Hello",
+        alias: "$ref:source",
+      } as const);
+      expect(t("alias")).toBe("$ref:source");
+    });
+
+    it("applies interpolation after resolution", () => {
+      const t = createTranslator(
+        {
+          source: "Hello, {{name}}!",
+          alias: "$ref:source",
+        } as const,
+        { resolveRefs: true }
+      );
+      // @ts-expect-error - TS can't infer interpolation keys through $ref resolution
+      expect(t("alias", { name: "World" })).toBe("Hello, World!");
+    });
+
+    it("respects max depth limit", () => {
+      const translations: Record<string, string> = {};
+      for (let i = 0; i < 15; i++) {
+        translations[`key${i}`] = `$ref:key${i + 1}`;
+      }
+      translations["key15"] = "Final";
+
+      const t = createTranslator(translations, { resolveRefs: true, silent: true });
+      expect(t("key0")).toBe("key0");
+    });
+
+    it("warns when max depth exceeded", () => {
+      const translations: Record<string, string> = {};
+      for (let i = 0; i < 15; i++) {
+        translations[`key${i}`] = `$ref:key${i + 1}`;
+      }
+      translations["key15"] = "Final";
+
+      const t = createTranslator(translations, { resolveRefs: true });
+      t("key0");
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Reference resolution exceeded max depth (10) for key "key10"'
+      );
+    });
+
+    it("returns key on empty reference target", () => {
+      const t = createTranslator(
+        {
+          alias: "$ref:",
+        } as const,
+        { resolveRefs: true, silent: true }
+      );
+      expect(t("alias")).toBe("alias");
+    });
+
+    it("warns on empty reference target", () => {
+      const t = createTranslator(
+        {
+          alias: "$ref:",
+        } as const,
+        { resolveRefs: true }
+      );
+      t("alias");
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Empty reference target for key "alias"'
+      );
     });
   });
 });

@@ -10,6 +10,7 @@ import {
 
 export interface TranslatorOptions {
 	silent?: boolean;
+	resolveRefs?: boolean;
 }
 
 // Helper function to determine if we should log warnings
@@ -30,6 +31,66 @@ export function createTranslator<T extends FlatTranslations>(
 	globalOptions: TranslatorOptions = {}
 ) {
 	type TranslationKey = keyof T & string;
+	const REF_PREFIX = "$ref:";
+	const MAX_REF_DEPTH = 10;
+
+	// ------------------ Reference Resolution ------------------
+
+	function resolveValue(
+		key: string,
+		originalKey?: string,
+		visited: Set<string> = new Set(),
+		depth: number = 0
+	): string {
+		const rootKey = originalKey ?? key;
+
+		if (depth >= MAX_REF_DEPTH) {
+			if (shouldLog(globalOptions.silent)) {
+				console.warn(
+					`Reference resolution exceeded max depth (${MAX_REF_DEPTH}) for key "${key}"`
+				);
+			}
+			return rootKey;
+		}
+
+		const value = translations[key];
+
+		if (typeof value !== "string") {
+			return rootKey;
+		}
+
+		if (!value.startsWith(REF_PREFIX)) {
+			return value;
+		}
+
+		const refKey = value.slice(REF_PREFIX.length);
+
+		if (!refKey) {
+			if (shouldLog(globalOptions.silent)) {
+				console.warn(`Empty reference target for key "${key}"`);
+			}
+			return rootKey;
+		}
+
+		if (visited.has(refKey)) {
+			if (shouldLog(globalOptions.silent)) {
+				console.warn(`Circular reference detected: "${key}" -> "${refKey}"`);
+			}
+			return rootKey;
+		}
+
+		if (!(refKey in translations)) {
+			if (shouldLog(globalOptions.silent)) {
+				console.warn(`Reference target "${refKey}" not found for key "${key}"`);
+			}
+			return rootKey;
+		}
+
+		visited.add(key);
+		return resolveValue(refKey, rootKey, visited, depth + 1);
+	}
+
+	// ------------------ Translate Function ------------------
 
 	// TypeScript literal strings - full type safety
 	function translate<K extends InterpolationKey<T>>(
@@ -49,7 +110,14 @@ export function createTranslator<T extends FlatTranslations>(
 	): string;
 
 	function translate<K extends TranslationKey>(key: K, options?: any): string {
-		const value = translations[key];
+		let value: string | undefined = translations[key];
+
+		// Resolve $ref: if enabled
+		if (globalOptions.resolveRefs && typeof value === "string" && value.startsWith(REF_PREFIX)) {
+			const resolved = resolveValue(key);
+			// If resolution returned the key itself (error case), treat as not found
+			value = resolved === key ? undefined : resolved;
+		}
 
 		// If no translation found, use $defaultValue or key itself
 		if (typeof value !== "string") {
