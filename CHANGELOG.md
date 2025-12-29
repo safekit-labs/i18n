@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/safekit-labs/i18n/compare/v0.3.0...v0.4.0) (2025-12-29)
+
+
+### Features
+
+* Added reference key resolution ([144d29b](https://github.com/safekit-labs/i18n/commit/144d29b52f89af25daeb20d3e3a6696c2599bb36))
+
 # [0.3.0](https://github.com/safekit-labs/i18n/compare/v0.2.3...v0.3.0) (2025-12-17)
 
 
