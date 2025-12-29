@@ -74,25 +74,20 @@ async function runExample() {
   console.log(tNav("greeting", { name: "test" })); // typeError: greeting is not in nav namespace
 
   // ------------------------------------------------------------------------------------------------
-  // Silent Option
+  // Debug Option
   // ------------------------------------------------------------------------------------------------
 
-  // Default behavior: warnings in development, silent in production
+  // Default behavior: silent (no warnings)
   const tDefault = createTranslator(translations);
 
-  // Force silent mode
-  const tSilent = createTranslator(translations, { silent: true });
+  // Enable debug mode to see warnings
+  const tDebug = createTranslator(translations, { debug: true });
 
-  // Force warnings (even in production)  
-  const tVerbose = createTranslator(translations, { silent: false });
-
-  console.log("Silent option examples:");
+  console.log("Debug option examples:");
   // @ts-expect-error - testing runtime behavior
-  console.log(tDefault("missing.key")); // "missing.key" (with warning in dev)
+  console.log(tDefault("missing.key")); // "missing.key" (no warning)
   // @ts-expect-error - testing runtime behavior
-  console.log(tSilent("missing.key")); // "missing.key" (no warning)
-  // @ts-expect-error - testing runtime behavior
-  console.log(tVerbose("missing.key")); // "missing.key" (always warns)
+  console.log(tDebug("missing.key")); // "missing.key" (with warning)
 
   // ------------------------------------------------------------------------------------------------
   // Multi-language Support

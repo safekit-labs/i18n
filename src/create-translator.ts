@@ -9,17 +9,9 @@ import {
 } from "./types";
 
 export interface TranslatorOptions {
-	silent?: boolean;
+	debug?: boolean;
 	resolveRefs?: boolean;
-}
-
-// Helper function to determine if we should log warnings
-function shouldLog(silent?: boolean): boolean {
-	if (silent !== undefined) return !silent;
-
-	// Auto-detect environment: only log in development
-	// eslint-disable-next-line no-undef
-	return typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production';
+	returnNull?: boolean;
 }
 
 /**
@@ -45,7 +37,7 @@ export function createTranslator<T extends FlatTranslations>(
 		const rootKey = originalKey ?? key;
 
 		if (depth >= MAX_REF_DEPTH) {
-			if (shouldLog(globalOptions.silent)) {
+			if (globalOptions.debug) {
 				console.warn(
 					`Reference resolution exceeded max depth (${MAX_REF_DEPTH}) for key "${key}"`
 				);
@@ -66,21 +58,21 @@ export function createTranslator<T extends FlatTranslations>(
 		const refKey = value.slice(REF_PREFIX.length);
 
 		if (!refKey) {
-			if (shouldLog(globalOptions.silent)) {
+			if (globalOptions.debug) {
 				console.warn(`Empty reference target for key "${key}"`);
 			}
 			return rootKey;
 		}
 
 		if (visited.has(refKey)) {
-			if (shouldLog(globalOptions.silent)) {
+			if (globalOptions.debug) {
 				console.warn(`Circular reference detected: "${key}" -> "${refKey}"`);
 			}
 			return rootKey;
 		}
 
 		if (!(refKey in translations)) {
-			if (shouldLog(globalOptions.silent)) {
+			if (globalOptions.debug) {
 				console.warn(`Reference target "${refKey}" not found for key "${key}"`);
 			}
 			return rootKey;
@@ -119,17 +111,25 @@ export function createTranslator<T extends FlatTranslations>(
 			value = resolved === key ? undefined : resolved;
 		}
 
-		// If no translation found, use $defaultValue or key itself
+		// If no translation found, use $defaultValue, return null, or key itself
 		if (typeof value !== "string") {
 			if (options?.$defaultValue !== undefined) {
-				if (shouldLog(globalOptions.silent)) {
+				if (globalOptions.debug) {
 					console.warn(
 						`Translation key "${key.toString()}" not found, using default value.`
 					);
 				}
 				return options.$defaultValue;
 			}
-			if (shouldLog(globalOptions.silent)) {
+			if (globalOptions.returnNull) {
+				if (globalOptions.debug) {
+					console.warn(
+						`Translation key "${key.toString()}" not found, returning null.`
+					);
+				}
+				return null as unknown as string;
+			}
+			if (globalOptions.debug) {
 				console.warn(
 					`Translation key "${key.toString()}" not found, using key as value.`
 				);
@@ -149,14 +149,14 @@ export function createTranslator<T extends FlatTranslations>(
 						if (replacement !== undefined) {
 							return String(replacement);
 						}
-						if (shouldLog(globalOptions.silent)) {
+						if (globalOptions.debug) {
 							console.warn(
 								`Interpolation key "{{${paramKey}}}" has an undefined value.`
 							);
 						}
 						return `{{${paramKey}}}`;
 					}
-					if (shouldLog(globalOptions.silent)) {
+					if (globalOptions.debug) {
 						console.warn(
 							`Interpolation key "{{${paramKey}}}" not found in options.`
 						);

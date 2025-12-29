@@ -48,25 +48,19 @@ describe("@safekit/i18n", () => {
     it("should handle missing keys with key fallback", () => {
       // @ts-expect-error - testing runtime behavior with invalid key
       expect(t("missing.key")).toBe("missing.key");
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Translation key "missing.key" not found, using key as value.'
-      );
+      expect(consoleSpy).not.toHaveBeenCalled();
     });
 
     it("should handle missing keys with default value", () => {
       // @ts-expect-error - testing runtime behavior with invalid key
       expect(t("missing.key", { $defaultValue: "fallback" })).toBe("fallback");
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Translation key "missing.key" not found, using default value.'
-      );
+      expect(consoleSpy).not.toHaveBeenCalled();
     });
 
-    it("should warn on missing interpolation parameters", () => {
+    it("should not warn on missing interpolation parameters by default", () => {
       // @ts-expect-error - testing runtime behavior with wrong parameter
       expect(t("user.greeting", { wrongParam: "John" })).toBe("Hello {{name}}!");
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Interpolation key "{{name}}" not found in options.'
-      );
+      expect(consoleSpy).not.toHaveBeenCalled();
     });
   });
 
@@ -88,7 +82,55 @@ describe("@safekit/i18n", () => {
 
     it("should handle missing keys in namespace", () => {
       const tUser = getFixedT(translations, "user");
-      
+
+      // @ts-expect-error - testing runtime behavior with invalid key
+      expect(tUser("invalid")).toBe("user.invalid");
+      expect(consoleSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("debug option", () => {
+    it("should not log warnings by default", () => {
+      const t = createTranslator(translations);
+
+      // @ts-expect-error - testing runtime behavior with invalid key
+      t("missing.key");
+      expect(consoleSpy).not.toHaveBeenCalled();
+    });
+
+    it("should log warnings when debug is true", () => {
+      const t = createTranslator(translations, { debug: true });
+
+      // @ts-expect-error - testing runtime behavior with invalid key
+      expect(t("missing.key")).toBe("missing.key");
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Translation key "missing.key" not found, using key as value.'
+      );
+    });
+
+    it("should log default value warning when debug is true", () => {
+      const t = createTranslator(translations, { debug: true });
+
+      // @ts-expect-error - testing runtime behavior with invalid key
+      expect(t("missing.key", { $defaultValue: "fallback" })).toBe("fallback");
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Translation key "missing.key" not found, using default value.'
+      );
+    });
+
+    it("should log interpolation warning when debug is true", () => {
+      const t = createTranslator(translations, { debug: true });
+
+      // @ts-expect-error - testing runtime behavior with wrong parameter
+      expect(t("user.greeting", { wrongParam: "John" })).toBe("Hello {{name}}!");
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Interpolation key "{{name}}" not found in options.'
+      );
+    });
+
+    it("should work with getFixedT debug option", () => {
+      const tUser = getFixedT(translations, "user", { debug: true });
+
       // @ts-expect-error - testing runtime behavior with invalid key
       expect(tUser("invalid")).toBe("user.invalid");
       expect(consoleSpy).toHaveBeenCalledWith(
@@ -97,29 +139,51 @@ describe("@safekit/i18n", () => {
     });
   });
 
-  describe("silent option", () => {
-    it("should log warnings by default", () => {
+  describe("returnNull option", () => {
+    it("should return key by default when translation is missing", () => {
       const t = createTranslator(translations);
 
       // @ts-expect-error - testing runtime behavior with invalid key
-      t("missing.key");
-      expect(consoleSpy).toHaveBeenCalled();
-    });
-
-    it("should not log warnings when silent is true", () => {
-      const t = createTranslator(translations, { silent: true });
-
-      // @ts-expect-error - testing runtime behavior with invalid key
       expect(t("missing.key")).toBe("missing.key");
-      expect(consoleSpy).not.toHaveBeenCalled();
     });
 
-    it("should work with getFixedT silent option", () => {
-      const tUser = getFixedT(translations, "user", { silent: true });
+    it("should return null when returnNull is true and translation is missing", () => {
+      const t = createTranslator(translations, { returnNull: true });
 
       // @ts-expect-error - testing runtime behavior with invalid key
-      expect(tUser("invalid")).toBe("user.invalid");
-      expect(consoleSpy).not.toHaveBeenCalled();
+      expect(t("missing.key")).toBeNull();
+    });
+
+    it("should still use $defaultValue over returnNull", () => {
+      const t = createTranslator(translations, { returnNull: true });
+
+      // @ts-expect-error - testing runtime behavior with invalid key
+      expect(t("missing.key", { $defaultValue: "fallback" })).toBe("fallback");
+    });
+
+    it("should return null on failed $ref resolution when returnNull is true", () => {
+      const t = createTranslator(
+        { alias: "$ref:nonexistent" } as const,
+        { resolveRefs: true, returnNull: true }
+      );
+      expect(t("alias")).toBeNull();
+    });
+
+    it("should work with getFixedT returnNull option", () => {
+      const tUser = getFixedT(translations, "user", { returnNull: true });
+
+      // @ts-expect-error - testing runtime behavior with invalid key
+      expect(tUser("invalid")).toBeNull();
+    });
+
+    it("should log when debug and returnNull are both true", () => {
+      const t = createTranslator(translations, { returnNull: true, debug: true });
+
+      // @ts-expect-error - testing runtime behavior with invalid key
+      expect(t("missing.key")).toBeNull();
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Translation key "missing.key" not found, returning null.'
+      );
     });
   });
 
@@ -153,18 +217,18 @@ describe("@safekit/i18n", () => {
           a: "$ref:b",
           b: "$ref:a",
         } as const,
-        { resolveRefs: true, silent: true }
+        { resolveRefs: true }
       );
       expect(t("a")).toBe("a");
     });
 
-    it("warns on circular reference", () => {
+    it("warns on circular reference when debug is true", () => {
       const t = createTranslator(
         {
           a: "$ref:b",
           b: "$ref:a",
         } as const,
-        { resolveRefs: true }
+        { resolveRefs: true, debug: true }
       );
       t("a");
       expect(consoleSpy).toHaveBeenCalledWith(
@@ -177,17 +241,17 @@ describe("@safekit/i18n", () => {
         {
           alias: "$ref:nonexistent",
         } as const,
-        { resolveRefs: true, silent: true }
+        { resolveRefs: true }
       );
       expect(t("alias")).toBe("alias");
     });
 
-    it("warns on missing target", () => {
+    it("warns on missing target when debug is true", () => {
       const t = createTranslator(
         {
           alias: "$ref:nonexistent",
         } as const,
-        { resolveRefs: true }
+        { resolveRefs: true, debug: true }
       );
       t("alias");
       expect(consoleSpy).toHaveBeenCalledWith(
@@ -233,18 +297,18 @@ describe("@safekit/i18n", () => {
       }
       translations["key15"] = "Final";
 
-      const t = createTranslator(translations, { resolveRefs: true, silent: true });
+      const t = createTranslator(translations, { resolveRefs: true });
       expect(t("key0")).toBe("key0");
     });
 
-    it("warns when max depth exceeded", () => {
+    it("warns when max depth exceeded and debug is true", () => {
       const translations: Record<string, string> = {};
       for (let i = 0; i < 15; i++) {
         translations[`key${i}`] = `$ref:key${i + 1}`;
       }
       translations["key15"] = "Final";
 
-      const t = createTranslator(translations, { resolveRefs: true });
+      const t = createTranslator(translations, { resolveRefs: true, debug: true });
       t("key0");
       expect(consoleSpy).toHaveBeenCalledWith(
         'Reference resolution exceeded max depth (10) for key "key10"'
@@ -256,17 +320,17 @@ describe("@safekit/i18n", () => {
         {
           alias: "$ref:",
         } as const,
-        { resolveRefs: true, silent: true }
+        { resolveRefs: true }
       );
       expect(t("alias")).toBe("alias");
     });
 
-    it("warns on empty reference target", () => {
+    it("warns on empty reference target when debug is true", () => {
       const t = createTranslator(
         {
           alias: "$ref:",
         } as const,
-        { resolveRefs: true }
+        { resolveRefs: true, debug: true }
       );
       t("alias");
       expect(consoleSpy).toHaveBeenCalledWith(
