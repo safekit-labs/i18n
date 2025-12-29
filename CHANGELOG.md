@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/safekit-labs/i18n/compare/v0.4.0...v0.5.0) (2025-12-29)
+
+
+### Features
+
+* Updated options to have debug, returnNull and resolveRefs ([6e45be7](https://github.com/safekit-labs/i18n/commit/6e45be72e8221cd54675207c081ab85a16f6807d))
+
 # [0.4.0](https://github.com/safekit-labs/i18n/compare/v0.3.0...v0.4.0) (2025-12-29)
 
 
